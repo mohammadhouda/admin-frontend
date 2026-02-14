@@ -16,7 +16,7 @@ export default function LoginPage() {
     setError("");
 
     try {
-      await axios.post("/auth/login", { email, password });
+      await axios.post("api/auth/login", { email, password });
       router.push("/");
     } catch (err) {
       setError("Invalid credentials");
