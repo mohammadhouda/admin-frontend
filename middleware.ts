@@ -2,15 +2,21 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-export function middleware(req: NextRequest) {
-  const token = req.cookies.get("access_token")?.value;
-  const path = req.nextUrl.pathname;
+const PUBLIC_ROUTES = ["/login"];
 
-  if (!token && path !== "/login") {
+export function middleware(req: NextRequest) {
+  const accessToken = req.cookies.get("access_token")?.value;
+  const { pathname } = req.nextUrl;
+
+  const isPublicRoute = PUBLIC_ROUTES.includes(pathname);
+
+  // If no token and trying to access protected route → redirect to login
+  if (!accessToken && !isPublicRoute) {
     return NextResponse.redirect(new URL("/login", req.url));
   }
 
-  if (token && path === "/login") {
+  // If token exists and trying to access login → redirect to home
+  if (accessToken && pathname === "/login") {
     return NextResponse.redirect(new URL("/", req.url));
   }
 
