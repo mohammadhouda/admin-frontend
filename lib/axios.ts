@@ -21,10 +21,7 @@ api.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
-    const msg = error.response?.data?.message;
-
-    // Only refresh if token expired
-    if (error.response?.status === 401 && msg === "Authentication token has expired") {
+    if (error.response?.status === 401) {
       if (isRefreshing) {
         return new Promise((resolve, reject) => {
           failedQueue.push({ resolve, reject });
