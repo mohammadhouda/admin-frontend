@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import api from "../../../lib/axios";
+import Loading from "../../loading";
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -15,7 +16,6 @@ export default function DashboardPage() {
         setUser(res.data);
       } catch (err) {
         console.error("Auth check failed", err);
-        // redirect safely
         router.replace("/login");
       } finally {
         setLoading(false);
@@ -25,7 +25,7 @@ export default function DashboardPage() {
     fetchProfile();
   }, [router]);
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <Loading />;
 
   return (
     <div>

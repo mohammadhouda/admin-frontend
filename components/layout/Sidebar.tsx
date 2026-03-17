@@ -6,7 +6,7 @@ export default function Sidebar() {
   const pathname: string = usePathname();
 
   const menuItems: { label: string; href: string }[] = [
-    { label: "Dashboard", href: "/dashboard" },
+    { label: "Home", href: "/dashboard" },
     { label: "NGOs", href: "/ngos" },
     { label: "Users", href: "/users" },
     { label: "Requests", href: "/requests" },
@@ -15,15 +15,14 @@ export default function Sidebar() {
   ];
 
   return (
-    <aside className="w-64 bg-black text-white h-screen p-4 flex flex-col">
-      <h1 className="text-2xl font-bold mb-6">Admin</h1>
+    <aside className="w-64 bg-white text-black calc(100vh - 64px) p-4 flex flex-col">
       <nav className="flex-1 flex flex-col gap-2">
         {menuItems.map((item) => (
           <Link
             key={item.href}
             href={item.href}
-            className={`p-2 rounded hover:bg-gray-700 ${
-              pathname === item.href ? "bg-gray-700" : ""
+            className={`p-2 rounded hover:bg-gray-200 ${
+              pathname === item.href ? "bg-gray-200" : ""
             }`}
           >
             {item.label}
