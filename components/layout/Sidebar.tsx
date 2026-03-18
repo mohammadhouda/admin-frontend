@@ -48,7 +48,7 @@ export default function Sidebar() {
   };
 
   return (
-    <aside className="w-64 bg-white border-r border-gray-200 sticky top-0 min-h-[calc(100vh-56px)] flex flex-col justify-between overflow-y-auto">
+    <aside className="w-64 bg-white border-r border-gray-200 flex flex-col justify-between overflow-y-auto">
       <nav className="flex flex-col gap-1 px-3 py-4">
         {menuItems.map((item) => {
           const isActive = pathname === item.href;

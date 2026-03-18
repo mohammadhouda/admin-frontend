@@ -11,11 +11,13 @@ export default function DashboardLayout({
   return (
     <UserProvider>
       <ProtectedRoute>
-        <div className="flex flex-col min-h-screen bg-gray-100">
+        <div className="flex flex-col h-screen overflow-hidden">
           <Navbar />
-          <div className="flex flex-1">
+          <div className="flex flex-1 overflow-hidden">
             <Sidebar />
-            <main className="flex-1 p-6">{children}</main>
+            <main className="flex-1 overflow-y-auto bg-gray-100 p-6">
+              {children}
+            </main>
           </div>
         </div>
       </ProtectedRoute>
