@@ -5,8 +5,13 @@ const api = axios.create({
   withCredentials: true,
 });
 
+interface FailedRequest {
+  resolve: () => void;
+  reject: (err: any) => void;
+}
+
 let isRefreshing = false;
-let failedQueue: any[] = [];
+let failedQueue: FailedRequest[] = [];
 
 const processQueue = (error: any) => {
   failedQueue.forEach(prom => {
@@ -21,17 +26,23 @@ api.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
-    if (error.response?.status === 401) {
+    // Only attempt refresh once per request
+    if (error.response?.status === 401 && !originalRequest._retry) {
       if (isRefreshing) {
         return new Promise((resolve, reject) => {
           failedQueue.push({ resolve, reject });
         }).then(() => api(originalRequest));
       }
 
+      originalRequest._retry = true;
       isRefreshing = true;
 
       try {
-        await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/refresh`, {}, { withCredentials: true });
+        await axios.post(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/auth/refresh`,
+          {},
+          { withCredentials: true }
+        );
         processQueue(null);
         return api(originalRequest);
       } catch (err) {
@@ -43,11 +54,7 @@ api.interceptors.response.use(
       }
     }
 
-    // Other 401 errors, immediately logout
-    if (error.response?.status === 401) {
-      window.location.href = "/login";
-    }
-
+    // Any other error (or a 401 that already retried) — reject directly
     return Promise.reject(error);
   }
 );

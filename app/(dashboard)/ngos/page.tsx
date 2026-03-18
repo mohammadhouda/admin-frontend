@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import api from "@/lib/axios";
 import Loading from "@/app/loading";
+import { useRouter } from "next/navigation";
 // icon view
 import { CheckCircleIcon, XCircleIcon, EyeIcon} from "@heroicons/react/24/solid";
 
@@ -23,6 +24,7 @@ interface Charity {
 export default function NGOs() {
   const [charities, setCharities] = useState<Charity[]>([]);
   const [loading, setLoading] = useState(true);
+  const router = useRouter();
 
   useEffect(() => {
     const fetchCharities = async () => {
@@ -113,7 +115,7 @@ export default function NGOs() {
                     className="text-blue-600 hover:text-blue-900 font-medium cursor-pointer"
                     onClick={() => {
                       // Navigate to charity details page
-                      window.location.href = `/charities/${charity.id}`;
+                      router.push(`/charities/${charity.id}`);
                     }}
                   >
                     
