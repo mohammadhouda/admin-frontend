@@ -1,12 +1,12 @@
-// middleware.ts
+// proxy.ts
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-export function middleware(req: NextRequest) {
+export function proxy(req: NextRequest) {
   const accessToken = req.cookies.get("access_token")?.value;
   const { pathname } = req.nextUrl;
 
-  // If token exists and trying to access login → redirect to home
+  // If token exists and trying to access login → redirect to dashboard
   if (accessToken && pathname === "/login") {
     return NextResponse.redirect(new URL("/dashboard", req.url));
   }
