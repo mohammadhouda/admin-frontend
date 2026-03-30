@@ -14,6 +14,8 @@ import {
   ArrowPathIcon,
 } from "@heroicons/react/24/outline";
 import api from "@/lib/axios";
+import CustomDropdown from "@/components/CustomDropdown";
+import CustomDatePicker from "@/components/CustomDatePicker";
 
 /* types */
 type TabKey = "registration" | "ngos" | "users" | "projects";
@@ -208,65 +210,81 @@ export default function ReportsPage() {
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3">
             <div>
               <label className="text-[11px] font-medium text-gray-500 block mb-1">From</label>
-              <input type="date" value={filters.from} onChange={(e) => setFilters({ ...filters, from: e.target.value })}
-                className="w-full px-2.5 py-1.5 text-sm border border-gray-200 rounded-md bg-gray-50 focus:bg-white focus:border-blue-300 focus:ring-1 focus:ring-blue-100 outline-none" />
+              <CustomDatePicker
+                value={filters.from}
+                onChange={(val) => setFilters({ ...filters, from: val })}
+                placeholder="Start date"
+              />
             </div>
             <div>
               <label className="text-[11px] font-medium text-gray-500 block mb-1">To</label>
-              <input type="date" value={filters.to} onChange={(e) => setFilters({ ...filters, to: e.target.value })}
-                className="w-full px-2.5 py-1.5 text-sm border border-gray-200 rounded-md bg-gray-50 focus:bg-white focus:border-blue-300 focus:ring-1 focus:ring-blue-100 outline-none" />
+              <CustomDatePicker
+                value={filters.to}
+                onChange={(val) => setFilters({ ...filters, to: val })}
+                placeholder="End date"
+              />
             </div>
             {(activeTab === "registration" || activeTab === "projects") && (
               <div>
                 <label className="text-[11px] font-medium text-gray-500 block mb-1">Status</label>
-                <select value={filters.status} onChange={(e) => setFilters({ ...filters, status: e.target.value })}
-                  className="w-full px-2.5 py-1.5 text-sm border border-gray-200 rounded-md bg-gray-50 focus:bg-white focus:border-blue-300 outline-none">
-                  <option value="all">All</option>
-                  {activeTab === "registration" ? (
-                    <>
-                      <option value="PENDING">Pending</option>
-                      <option value="APPROVED">Approved</option>
-                      <option value="DECLINED">Declined</option>
-                    </>
-                  ) : (
-                    <>
-                      <option value="ACTIVE">Active</option>
-                      <option value="PAUSED">Paused</option>
-                      <option value="CLOSED">Closed</option>
-                    </>
-                  )}
-                </select>
+                <CustomDropdown
+                  value={filters.status}
+                  onChange={(val) => setFilters({ ...filters, status: val })}
+                  options={[
+                    { label: "All", value: "all" },
+                    ...(activeTab === "registration"
+                      ? [
+                          { label: "Pending", value: "PENDING" },
+                          { label: "Approved", value: "APPROVED" },
+                          { label: "Declined", value: "DECLINED" },
+                        ]
+                      : [
+                          { label: "Active", value: "ACTIVE" },
+                          { label: "Paused", value: "PAUSED" },
+                          { label: "Closed", value: "CLOSED" },
+                        ]),
+                  ]}
+                />
               </div>
             )}
             {(activeTab === "registration" || activeTab === "ngos" || activeTab === "projects") && (
               <div>
                 <label className="text-[11px] font-medium text-gray-500 block mb-1">Category</label>
-                <select value={filters.category} onChange={(e) => setFilters({ ...filters, category: e.target.value })}
-                  className="w-full px-2.5 py-1.5 text-sm border border-gray-200 rounded-md bg-gray-50 focus:bg-white focus:border-blue-300 outline-none">
-                  <option value="all">All</option>
-                  {filterOpts.categories.map((c) => <option key={c} value={c}>{c}</option>)}
-                </select>
+                <CustomDropdown
+                  value={filters.category}
+                  onChange={(val) => setFilters({ ...filters, category: val })}
+                  options={[
+                    { label: "All", value: "all" },
+                    ...filterOpts.categories.map((c) => ({ label: c, value: c }))
+                  ]}
+                />
               </div>
             )}
             {(activeTab === "registration" || activeTab === "ngos") && (
               <div>
                 <label className="text-[11px] font-medium text-gray-500 block mb-1">City</label>
-                <select value={filters.city} onChange={(e) => setFilters({ ...filters, city: e.target.value })}
-                  className="w-full px-2.5 py-1.5 text-sm border border-gray-200 rounded-md bg-gray-50 focus:bg-white focus:border-blue-300 outline-none">
-                  <option value="all">All</option>
-                  {filterOpts.cities.map((c) => <option key={c} value={c}>{c}</option>)}
-                </select>
+                <CustomDropdown
+                  value={filters.city}
+                  onChange={(val) => setFilters({ ...filters, city: val })}
+                  options={[
+                    { label: "All", value: "all" },
+                    ...filterOpts.cities.map((c) => ({ label: c, value: c }))
+                  ]}
+                />
               </div>
             )}
             {activeTab === "ngos" && (
               <div>
                 <label className="text-[11px] font-medium text-gray-500 block mb-1">Verified</label>
-                <select value={filters.verified} onChange={(e) => setFilters({ ...filters, verified: e.target.value })}
-                  className="w-full px-2.5 py-1.5 text-sm border border-gray-200 rounded-md bg-gray-50 focus:bg-white focus:border-blue-300 outline-none">
-                  <option value="all">All</option>
-                  <option value="true">Verified</option>
-                  <option value="false">Unverified</option>
-                </select>
+                <CustomDropdown
+                  value={filters.verified}
+                  onChange={(val) => setFilters({ ...filters, verified: val })}
+                  options={[
+                    { label: "All", value: "all" },
+                    { label: "Verified", value: "verified" },
+                    { label: "Unverified", value: "unverified" },
+                  ]}
+                />
               </div>
             )}
           </div>
