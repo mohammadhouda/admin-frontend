@@ -97,7 +97,7 @@ function AddCharityModal({ onClose, onSuccess }: { onClose: () => void; onSucces
     setSubmitting(true);
     setApiError("");
     try {
-      await api.post("/api/charities", {
+      await api.post("/api/admin/charities", {
         name:     form.name.trim(),
         email:    form.email.trim(),
         password: form.password,
@@ -239,7 +239,7 @@ export default function NGOs() {
   };
 
   useEffect(() => {
-    api.get("/api/charities").then((res) => {
+    api.get("/api/admin/charities").then((res) => {
       const all: Charity[] = res.data.data?.items ?? [];
       setAllCategories([...new Set(all.map((c) => c.category))].sort());
       setAllCities([...new Set(all.map((c) => c.city))].sort());
@@ -257,7 +257,7 @@ export default function NGOs() {
       params.set("page", String(currentPage));
       params.set("limit", String(ITEMS_PER_PAGE));
 
-      const res = await api.get(`/api/charities?${params.toString()}`);
+      const res = await api.get(`/api/admin/charities?${params.toString()}`);
       setCharities(res.data.data?.items ?? []);
       setTotal(res.data.data?.total ?? 0);
     } catch (err) {

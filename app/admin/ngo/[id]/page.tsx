@@ -110,7 +110,7 @@ export default function CharityDetail() {
   };
 
   useEffect(() => {
-    api.get(`/api/charities/${id}`)
+    api.get(`/api/admin/charities/${id}`)
       .then((res) => setCharity(res.data.data))
       .catch(() => showToast("Failed to load charity", "error"))
       .finally(() => setLoading(false));
@@ -120,7 +120,7 @@ export default function CharityDetail() {
     if (!charity) return;
     setActionLoading(loadingKey);
     try {
-      const res = await api.patch(`/api/charities/${charity.userId}`, payload);
+      const res = await api.patch(`/api/admin/charities/${charity.userId}`, payload);
       // Merge updated fields back into local state
       setCharity((prev) => prev ? { ...prev, ...res.data.data, user: { ...prev.user, ...res.data.data?.user } } : prev);
       return true;
@@ -176,7 +176,7 @@ export default function CharityDetail() {
     if (!charity) return;
     setActionLoading("delete");
     try {
-      await api.delete(`/api/charities/${charity.userId}`);
+      await api.delete(`/api/admin/charities/${charity.userId}`);
       showToast("Charity deleted");
       setTimeout(() => router.push("/admin/ngo"), 1000);
     } catch {

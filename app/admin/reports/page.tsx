@@ -135,7 +135,7 @@ export default function ReportsPage() {
 
   // Fetch filter options once
   useEffect(() => {
-    api.get("/api/admin/report/filters").then((res) => setFilterOpts(res.data)).catch(() => {});
+    api.get("/api/admin/reports/filters").then((res) => setFilterOpts(res.data)).catch(() => {});
   }, []);
 
   // Fetch report data
@@ -150,7 +150,7 @@ export default function ReportsPage() {
       if (filters.city !== "all") params.set("city", filters.city);
       if (filters.verified !== "all") params.set("verified", filters.verified);
 
-      const endpoint = `/api/admin/report/${activeTab}?${params}`;
+      const endpoint = `/api/admin/reports/${activeTab}?${params}`;
       const res = await api.get(endpoint);
       setData(res.data);
     } catch (err) {

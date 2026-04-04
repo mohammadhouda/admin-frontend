@@ -118,7 +118,7 @@ function AddUserModal({ onClose, onSuccess }: { onClose: () => void; onSuccess: 
     setSubmitting(true);
     setApiError("");
     try {
-      await api.post("/api/users", {
+      await api.post("/api/admin/users", {
         name:     form.name.trim(),
         email:    form.email.trim(),
         password: form.password,
@@ -243,7 +243,7 @@ export default function Users() {
 
   // Fetch city options once
   useEffect(() => {
-    api.get("/api/users/cities").then((res) => {
+    api.get("/api/admin/users/cities").then((res) => {
       setAllCities(res.data.data ?? []);
     });
   }, []);
@@ -275,7 +275,7 @@ export default function Users() {
       params.set("page", String(currentPage));
       params.set("limit", String(ITEMS_PER_PAGE));
 
-      const res = await api.get(`/api/users?${params.toString()}`);
+      const res = await api.get(`/api/admin/users?${params.toString()}`);
       setUsers(res.data.data?.items ?? []);
       setTotal(res.data.data?.total ?? 0);
     } catch (err) {

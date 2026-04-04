@@ -137,7 +137,7 @@ export default function UserDetail() {
   };
 
   useEffect(() => {
-    api.get(`/api/users/${id}`)
+    api.get(`/api/admin/users/${id}`)
       .then((res) => setUser(res.data.data))
       .catch(() => showToast("Failed to load user", "error"))
       .finally(() => setLoading(false));
@@ -150,7 +150,7 @@ export default function UserDetail() {
     const nextActive = !user.isActive;
     setActionLoading("suspend");
     try {
-      await api.patch(`/api/users/${id}`, { isActive: nextActive });
+      await api.patch(`/api/admin/users/${id}`, { isActive: nextActive });
       setUser((prev) => prev ? { ...prev, isActive: nextActive } : prev);
       showToast(nextActive ? "Account reactivated" : "Account suspended");
     } catch {

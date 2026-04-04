@@ -570,7 +570,7 @@ export default function Requests() {
       if (regStatus !== "all") params.set("status", regStatus);
       params.set("page", String(regPage));
       params.set("limit", String(ITEMS_PER_PAGE));
-      const res = await api.get(`/api/requests/registration?${params}`);
+      const res = await api.get(`/api/admin/requests/registration?${params}`);
       setRegRequests(res.data.data?.items ?? []);
       setRegTotal(res.data.data?.total ?? 0);
     } catch {
@@ -588,7 +588,7 @@ export default function Requests() {
       if (verStatus !== "all") params.set("status", verStatus);
       params.set("page", String(verPage));
       params.set("limit", String(ITEMS_PER_PAGE));
-      const res = await api.get(`/api/requests/verification?${params}`);
+      const res = await api.get(`/api/admin/requests/verification?${params}`);
       setVerRequests(res.data.data?.items ?? []);
       setVerTotal(res.data.data?.total ?? 0);
     } catch {
@@ -618,8 +618,8 @@ export default function Requests() {
     try {
       const endpoint =
         modal.tab === "registration"
-          ? `/api/requests/registration/${modal.id}/approve`
-          : `/api/requests/verification/${modal.id}/approve`;
+          ? `/api/admin/requests/registration/${modal.id}/approve`
+          : `/api/admin/requests/verification/${modal.id}/approve`;
       await api.patch(endpoint, {});
       showToast("Request approved successfully");
       setModal(null);
@@ -639,8 +639,8 @@ export default function Requests() {
     try {
       const endpoint =
         modal.tab === "registration"
-          ? `/api/requests/registration/${modal.id}/decline`
-          : `/api/requests/verification/${modal.id}/decline`;
+          ? `/api/admin/requests/registration/${modal.id}/decline`
+          : `/api/admin/requests/verification/${modal.id}/decline`;
       await api.patch(endpoint, { reviewNote: note || undefined });
       showToast("Request declined");
       setModal(null);
